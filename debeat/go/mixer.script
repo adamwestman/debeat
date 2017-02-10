@@ -111,7 +111,7 @@ function on_message(self, message_id, message)
 			print("Sound already decaying")
 			return
 		end
-		
+
 		local gain = message.gain
 		local delay = message.delay or 0
 		local easing = message.easing or go.EASING_LINEAR
