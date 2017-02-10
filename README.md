@@ -5,7 +5,7 @@ Sound Library for the Defold Engine
 
 Interface for controlling tracks and sound groups, enabling smooth transitions of gain values.
 
-*Requires mixer.go to be added*
+**Requires mixer.go to be added**
 
 * mixer.play(url, [config])
 * mixer.stop(url, [config])
@@ -13,19 +13,19 @@ Interface for controlling tracks and sound groups, enabling smooth transitions o
 * mixer.set_group_gain(hash, gain, [config])
 
 
-*play config*
+**play config**
 * delay
 * attack
 * easing
 * gain
 
-*stop config*
+**stop config**
 * delay
 * decay
 * easing
 * gain
 
-*gain config*
+**gain config**
 * delay
 * duration
 * easing
@@ -40,7 +40,7 @@ Interface for controlling sfx in categories, playing them in order or disorder.
 * instance.stop()
 
 
-*create config*
+**create config**
 * gating
 * behaviour
 * min_offset
@@ -50,7 +50,6 @@ Interface for controlling sfx in categories, playing them in order or disorder.
 
 ![alt text](https://github.com/adamwestman/debeat/blob/master/simple_integration.png "Simple Integration")
 
-'''
 
 	local mixer = require("debeat.mixer")
 	local queue = require("debeat.queue")
@@ -83,4 +82,3 @@ Interface for controlling sfx in categories, playing them in order or disorder.
 		end
 	end
 	
-'''
