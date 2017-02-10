@@ -1,0 +1,12 @@
+go.property("group", hash("master"))
+go.property("gain", 1.0)
+
+function init(self)
+	-- setup initial gain
+	self.gain = sound.get_group_gain(self.group)
+end
+
+function update(self)
+	-- continously update gain
+	sound.set_group_gain(self.group, self.gain)
+end

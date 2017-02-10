@@ -1,0 +1,6 @@
+go.property("url", msg.url(""))
+go.property("gain", 1.0)
+
+function update(self)
+	msg.post(self.url, "set_gain", {gain=self.gain})
+end

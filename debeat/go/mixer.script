@@ -1,0 +1,119 @@
+local mixer = require("debeat.mixer")
+
+-- Based on ADRS: https://en.wikipedia.org/wiki/Synthesizer#Attack_Decay_Sustain_Release_.28ADSR.29_envelope
+local STATUS_ATTACK = hash("attack")
+local STATUS_DECAY = hash("decay")
+local STATUS_SUSTAIN = hash("sustain")
+local STATUS_RELEASE = hash("release")
+
+go.property("default_gain", 1)
+go.property("default_attack", 0.1)
+go.property("default_decay", 0.1)
+
+function init(self)
+	mixer.set_default(msg.url())
+
+	self.groups = {}
+	self.sounds = {}
+
+	msg.post("#", "setup_groups")
+end
+
+local function get_running(self, url)
+	for _,sound in pairs(self.sounds) do
+		if sound.url == url then
+			return sound
+		end
+	end
+end
+
+function on_message(self, message_id, message)
+	if message_id == hash("setup_groups") then
+		for _,group in pairs(sound.get_groups()) do
+			if self.groups[group] then
+				go.delete(self.groups[group])
+			end
+			local id = factory.create("#group_factory", go.get_position(), go.get_rotation(), {
+				group = group,
+			})
+			self.groups[group] = {id=id, group=group, script=msg.url(nil, id, "#script")}
+		end
+
+	elseif message_id == hash("set_group_gain") then
+		assert(message.group, "Expected group param")
+		assert(message.gain, "Expected gain param")
+
+		local group = self.groups[message.group]
+		assert(group, "Group is undefined")
+
+		local delay = message.delay or 0
+		local easing = message.easing or go.EASING_LINEAR
+		local duration = message.duration or 0.01
+		go.animate(group.script, "gain", go.PLAYBACK_ONCE, 0, easing, duration, delay)
+
+	elseif message_id == hash("play") then
+		if get_running(self, message.url) then
+			error("Sound already playing")
+		end
+
+		local id = factory.create("#sound_factory", go.get_position(), go.get_rotation(), {
+			url = message.url,
+			gain = 0
+		})
+		local script = msg.url(nil, id, "#script")
+
+		local delay = message.delay or 0
+		local gain = message.gain or self.default_gain
+		local easing = message.easing or go.EASING_LINEAR
+		local attack = message.attack or self.default_attack
+
+		local sound = {id=id, url=message.url, script=script, status=STATUS_ATTACK}
+
+		go.animate(script, "gain", go.PLAYBACK_ONCE, gain, easing, attack, delay, function()
+			sound.status = STATUS_SUSTAIN
+		end)
+		msg.post(message.url, "play_sound", {delay=delay})
+
+		table.insert(self.sounds, sound)
+
+	elseif message_id == hash("stop") then
+		local sound = get_running(self, message.url)
+		if not sound then
+			error("Sound not playing")
+		elseif sound.status == STATUS_DECAY then
+			print("Sound already decaying")
+			return
+		end
+
+		local delay = message.delay or 0
+		local easing = message.easing or go.EASING_LINEAR
+		local decay = message.decay or self.default_decay
+		go.animate(sound.script, "gain", go.PLAYBACK_ONCE, 0, easing, decay, delay, function()
+			msg.post(message.url, "stop_sound")
+
+			for i,remaining in pairs(self.sounds) do
+				if remaining.id == sound.id then
+					table.remove(self.sounds, i)
+					return
+				end
+			end
+			error("Failed to remove sound")
+		end)
+
+		sound.status = STATUS_DECAY
+
+	elseif message_id == hash("set_gain") then
+		local sound = get_running(self, message.url)
+		if not sound then
+			error("Sound not playing")
+		elseif sound.status == STATUS_DECAY then
+			print("Sound is decaying")
+			return
+		end
+
+		local delay = message.delay or 0
+		local easing = message.easing or go.EASING_LINEAR
+		local duration = message.duration or 0.01
+		go.animate(sound.script, "gain", go.PLAYBACK_ONCE, 0, easing, duration, delay)
+	end
+end
