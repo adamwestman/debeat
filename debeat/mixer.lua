@@ -33,7 +33,7 @@ function M.set_gain(sound_url, gain, config)
 	config = config or {}
 	config.url = sound_url
 	config.gain = gain
-	msg.post(mixer_url, "set_gain", config)
+	msg.post(mixer_url, "set_sound_gain", config)
 end
 
 function M.set_group_gain(group, gain, config)

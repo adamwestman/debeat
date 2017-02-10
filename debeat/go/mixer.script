@@ -36,7 +36,7 @@ function on_message(self, message_id, message)
 			local id = factory.create("#group_factory", go.get_position(), go.get_rotation(), {
 				group = group,
 			})
-			self.groups[group] = {id=id, group=group, script=msg.url(nil, id, "#script")}
+			self.groups[group] = {id=id, group=group, script=msg.url(nil, id, "script")}
 		end
 
 	elseif message_id == hash("set_group_gain") then
@@ -46,10 +46,11 @@ function on_message(self, message_id, message)
 		local group = self.groups[message.group]
 		assert(group, "Group is undefined")
 
+		local gain = message.gain
 		local delay = message.delay or 0
 		local easing = message.easing or go.EASING_LINEAR
 		local duration = message.duration or 0.01
-		go.animate(group.script, "gain", go.PLAYBACK_ONCE, 0, easing, duration, delay)
+		go.animate(group.script, "gain", go.PLAYBACK_ONCE_FORWARD, gain, easing, duration, delay)
 
 	elseif message_id == hash("play") then
 		if get_running(self, message.url) then
@@ -60,7 +61,7 @@ function on_message(self, message_id, message)
 			url = message.url,
 			gain = 0
 		})
-		local script = msg.url(nil, id, "#script")
+		local script = msg.url(nil, id, "script")
 
 		local delay = message.delay or 0
 		local gain = message.gain or self.default_gain
@@ -69,7 +70,7 @@ function on_message(self, message_id, message)
 
 		local sound = {id=id, url=message.url, script=script, status=STATUS_ATTACK}
 
-		go.animate(script, "gain", go.PLAYBACK_ONCE, gain, easing, attack, delay, function()
+		go.animate(script, "gain", go.PLAYBACK_ONCE_FORWARD, gain, easing, attack, delay, function()
 			sound.status = STATUS_SUSTAIN
 		end)
 		msg.post(message.url, "play_sound", {delay=delay})
@@ -88,7 +89,7 @@ function on_message(self, message_id, message)
 		local delay = message.delay or 0
 		local easing = message.easing or go.EASING_LINEAR
 		local decay = message.decay or self.default_decay
-		go.animate(sound.script, "gain", go.PLAYBACK_ONCE, 0, easing, decay, delay, function()
+		go.animate(sound.script, "gain", go.PLAYBACK_ONCE_FORWARD, 0, easing, decay, delay, function()
 			msg.post(message.url, "stop_sound")
 
 			for i,remaining in pairs(self.sounds) do
@@ -102,18 +103,19 @@ function on_message(self, message_id, message)
 
 		sound.status = STATUS_DECAY
 
-	elseif message_id == hash("set_gain") then
+	elseif message_id == hash("set_sound_gain") then
 		local sound = get_running(self, message.url)
 		if not sound then
 			error("Sound not playing")
 		elseif sound.status == STATUS_DECAY then
-			print("Sound is decaying")
+			print("Sound already decaying")
 			return
 		end
-
+		
+		local gain = message.gain
 		local delay = message.delay or 0
 		local easing = message.easing or go.EASING_LINEAR
 		local duration = message.duration or 0.01
-		go.animate(sound.script, "gain", go.PLAYBACK_ONCE, 0, easing, duration, delay)
+		go.animate(sound.script, "gain", go.PLAYBACK_ONCE_FORWARD, gain, easing, duration, delay)
 	end
 end

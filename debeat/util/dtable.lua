@@ -16,6 +16,7 @@ function M.copy_deep(orig)
 end
 
 function M.merge(t1, t2)
+	t1 = t1 or {}
 	for k,v in pairs(t2) do
 		t1[k] = t1[k] or v
 	end

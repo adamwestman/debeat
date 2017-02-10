@@ -1,4 +1,4 @@
-local dtable = require("dbeat.util.dtable")
+local dtable = require("debeat.util.dtable")
 
 local M = {}
 
@@ -21,7 +21,7 @@ function M.create(id, config)
 
 	local instance = {}
 
-	function instance.add_sound(url)
+	function instance.add(url)
 		for _,sound in pairs(available) do
 			assert(sound ~= url, "Multiple additions of same sound is not allowed")
 		end
@@ -29,10 +29,11 @@ function M.create(id, config)
 	end
 
 	function instance.play(delay, gain)
-		if (os.clock() - last_play) > config.gating then
-			last_play = os.clock()
+		local time = socket.gettime()
+		if (time - last_play) > config.gating then
+			last_play = time
 		else
-			print(string.format("Warning, queue %s called too frequently", id))
+			print(string.format("Warning, queue %s called too frequently", id), time - last_play)
 			return
 		end
 		if #available == 0 then
@@ -47,8 +48,9 @@ function M.create(id, config)
 			table.insert(available, sound)
 
 		elseif config.behaviour == M.TYPE_RANDOM then
-			local min_offset = math.min(config.min_offset, #available)
-			local offset = math.random(min_offset, #available)
+			local min_offset = math.min(config.min_offset, #available+1)
+			local offset = math.random(min_offset, #available+1)
+			print("Random offset", offset)
 			table.insert(available, offset, sound)
 		end
 	end
