@@ -1,6 +1,8 @@
 # debeat
 Sound Library for the Defold Engine
 
+Try the [HTML5 Demo](https://adamwestman.github.io/Debeat/)
+
 # Usage
 1. Add latest zip URL as a [dependency](http://www.defold.com/manuals/libraries/#_setting_up_library_dependencies) in your Defold project: `https://github.com/adamwestman/debeat/archive/master.zip`
 
