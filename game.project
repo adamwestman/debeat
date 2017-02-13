@@ -1,3 +1,15 @@
-
 [library]
 include_dirs = debeat
+
+[project]
+title = Debeat
+
+[bootstrap]
+main_collection = /examples/main.collectionc
+
+[script]
+shared_state = 1
+
+[input]
+game_binding = /input/input.input_bindingc
+

@@ -1,0 +1,84 @@
+local mixer = require("debeat.mixer")
+local queue = require("debeat.queue")
+
+local channel = require("examples.templates.channel")
+local track = require("examples.templates.track")
+local button = require("examples.templates.button")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	
+	channel.set_name("master", "Master")
+	channel.set_name("music", "Music")
+	channel.set_name("sfx", "Sfx")
+	
+	track.set_name("track1", "Drums")
+	track.set_name("track2", "Guitar")
+	
+	button.set_text("random", "Random")
+	button.set_text("sequence", "Sequence")
+	
+	self.random = queue.create("random", {behaviour = queue.TYPE_RANDOM, min_offset=3})
+	self.random.add(msg.url("#sfx_btn1"))
+	self.random.add(msg.url("#sfx_btn2"))
+	self.random.add(msg.url("#sfx_btn3"))
+	self.random.add(msg.url("#sfx_btn4"))
+	
+	self.sequence = queue.create("sequence", {gating = 0.7})
+	self.sequence.add(msg.url("#sfx_sequence1"))
+	self.sequence.add(msg.url("#sfx_sequence2"))
+	self.sequence.add(msg.url("#sfx_sequence3"))
+end
+
+function update(self, dt)
+	channel.update("master", hash("master"))
+	channel.update("music", hash("music"))
+	channel.update("sfx", hash("sfx"))
+end
+
+local function channel_input(id, action_id, action)
+	local was_muted = channel.is_muted(id)
+	if channel.on_input(id, action_id, action) then
+		local gain = channel.get_gain(id, 0, 1)
+		
+		if was_muted == channel.is_muted(id) then
+			mixer.set_group_gain(hash(id), gain)
+		else
+			mixer.set_group_gain(hash(id), gain, {duration=0.5})
+		end
+		return true
+	end
+end
+
+function on_input(self, action_id, action)
+	if channel_input("master", action_id, action) then
+		return true
+	elseif channel_input("music", action_id, action) then
+		return true
+	elseif channel_input("sfx", action_id, action) then
+		return true
+		
+	elseif button.on_input("random", action_id, action) then
+		self.random.play()
+		return true
+	elseif button.on_input("sequence", action_id, action) then
+		self.sequence.play()
+		return true
+		
+	elseif track.on_input("track1", action_id, action) then
+		if track.is_playing("track1") then
+			mixer.play(msg.url("#track1"))
+		else
+			mixer.stop(msg.url("#track1"))
+		end
+		return true
+	elseif track.on_input("track2", action_id, action) then
+		if track.is_playing("track2") then
+			mixer.play(msg.url("#track2"))
+		else
+			mixer.stop(msg.url("#track2"))
+		end
+		return true
+		
+	end
+end

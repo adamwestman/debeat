@@ -1,0 +1,6 @@
+images {
+  image: "/examples/assets/images/ramp.png"
+}
+margin: 1
+extrude_borders: 1
+inner_padding: 0

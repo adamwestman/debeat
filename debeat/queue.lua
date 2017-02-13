@@ -2,7 +2,9 @@ local dtable = require("debeat.util.dtable")
 
 local M = {}
 
+--- Plays sounds in the order they were added, looping around at end.
 M.TYPE_SEQUENCE = hash("SEQUENCE")
+--- Plays randomly from the queued sounds, requiring min_offset other sounds to play before repeating.
 M.TYPE_RANDOM = hash("RANDOM")
 
 M.default_config = {
@@ -21,13 +23,19 @@ function M.create(id, config)
 
 	local instance = {}
 
+	--- Add a sound to the queue.
+	-- @param url [url] sound component url
 	function instance.add(url)
+		assert(type(url) == "userdata", "Expected a url of type userdata, received "..type(url))
 		for _,sound in pairs(available) do
 			assert(sound ~= url, "Multiple additions of same sound is not allowed")
 		end
 		table.insert(available, url)
 	end
 
+	--- Play the next queued sound, unless blocked by gating.
+	-- @param delay [number] delay in seconds before the sound starts playing, default is 0.
+	-- @param gain [number]  sound gain between 0 and 1, default is 1.
 	function instance.play(delay, gain)
 		local time = socket.gettime()
 		if (time - last_play) > config.gating then
@@ -50,11 +58,11 @@ function M.create(id, config)
 		elseif config.behaviour == M.TYPE_RANDOM then
 			local min_offset = math.min(config.min_offset, #available+1)
 			local offset = math.random(min_offset, #available+1)
-			print("Random offset", offset)
 			table.insert(available, offset, sound)
 		end
 	end
 
+	--- Tell all queued sounds to stop playing.
 	function instance.stop()
 		for _,sound in pairs(available) do
 			msg.post(sound, "stop_sound")

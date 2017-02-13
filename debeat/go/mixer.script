@@ -73,7 +73,7 @@ function on_message(self, message_id, message)
 		go.animate(script, "gain", go.PLAYBACK_ONCE_FORWARD, gain, easing, attack, delay, function()
 			sound.status = STATUS_SUSTAIN
 		end)
-		msg.post(message.url, "play_sound", {delay=delay})
+		msg.post(message.url, "play_sound", {delay=delay, gain=0})
 
 		table.insert(self.sounds, sound)
 
@@ -94,6 +94,7 @@ function on_message(self, message_id, message)
 
 			for i,remaining in pairs(self.sounds) do
 				if remaining.id == sound.id then
+					go.delete(sound.id)
 					table.remove(self.sounds, i)
 					return
 				end
