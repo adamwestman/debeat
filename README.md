@@ -28,7 +28,9 @@ Interface for controlling tracks and sound groups, enabling smooth transitions o
 * local boolean = mixer.is_ready() -- verify that the mixer.go has been initalized.
 
 url is expected to point at a sound component. msg.url("#comp")
+
 gain is expected to be a number between 0-1.
+
 group is expected to be a hash matching a known sound group.
 
 **play config**
@@ -57,7 +59,9 @@ Interface for controlling sfx in categories, playing them in order or disorder.
 * instance.stop()
 
 url is expected to point at a sound component. msg.url("#comp")
+
 delay_seconds [number] time in seconds until the sound will be played.
+
 gain is expected to be a number between 0-1, defaults to 1.
 
 **create config**
