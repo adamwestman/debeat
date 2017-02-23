@@ -402,12 +402,12 @@ embedded_instances {
     id: "attack"
     properties {
       id: "event_name"
-      value: "block"
+      value: "attack"
       type: PROPERTY_TYPE_HASH
     }
     properties {
       id: "queue_name"
-      value: "/block"
+      value: "/attack"
       type: PROPERTY_TYPE_HASH
     }
   }
@@ -415,12 +415,12 @@ embedded_instances {
     id: "block"
     properties {
       id: "event_name"
-      value: "attack"
+      value: "block"
       type: PROPERTY_TYPE_HASH
     }
     properties {
       id: "queue_name"
-      value: "/attack"
+      value: "/block"
       type: PROPERTY_TYPE_HASH
     }
   }
