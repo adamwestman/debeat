@@ -72,7 +72,7 @@ gain is expected to be a number between 0-1, defaults to 1.
 * repeat_offset [integer] value between 1 and number of added sounds, preventing repeat of a sound until that many others have played.
 
 ### Script based
-Queues can also be setup using a specific game-object and script setup. The queue id will match that of the game-object and the amount of sounds specified in the coresponding property will be expected as sound components named "sound1", "sound2" etc.
+Queues can also be setup using a specific Game Object and script setup. The queue id will match that of the Game Object and the amount of sounds specified in the coresponding property will be expected as sound components named "sound1", "sound2" etc.
 
 **available queues** Where each script matches on of the available queue behaviours
 * debeat/queues/random.script
@@ -82,7 +82,7 @@ Queues can also be setup using a specific game-object and script setup. The queu
 
 ## Event
 
-The event system aims to separate audio controll from logic, enabling zero or more event handlers to react on trigger. With this approach teams can litter their code with events and later on add and tweak the audio using scripts alone.
+The event system aims to separate audio controll from logic, enabling zero or multiple *event handlers* to react on trigger. With this approach teams can litter their code with events and later on add and tweak the audio using scripts alone.
 
 * event.trigger(hash)
 
@@ -94,7 +94,7 @@ The event system aims to separate audio controll from logic, enabling zero or mo
 * stop_mixed.script
 * stop_queue.script
 
-For all scripts the property queue_name will be compared with triggered events and if a match is found they will be react.
+For all scripts the property *Event Name* will be compared with triggered events and if a match is found they will be react.
 
 ![alt text](https://github.com/adamwestman/debeat/blob/master/queue_event.png "Queue event")
 
