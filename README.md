@@ -55,7 +55,7 @@ group is expected to be a hash matching a known sound group.
 
 Interface for controlling sfx in categories, playing them in order or disorder.
 
-* local instance = queue.create(id, [config])
+* local instance = queue.create(hash, [config])
 * instance.add(url)
 * instance.play(url, [delay_seconds], [gain])
 * instance.stop()
@@ -69,8 +69,32 @@ gain is expected to be a number between 0-1, defaults to 1.
 **create config**
 * gating [number] time in seconds required between instance.play, defaults to 0.1
 * behaviour [queue.TYPE_X] constant representing the behaviour of the queue, defaults to TYPE_SEQUENCE.
-* min_offset [integer] value between 1 and number of added sounds, preventing repeat of a sound until that many others have played.
+* repeat_offset [integer] value between 1 and number of added sounds, preventing repeat of a sound until that many others have played.
 
+### Script based
+Queues can also be setup using a specific game-object and script setup. The queue id will match that of the game-object and the amount of sounds specified in the coresponding property will be expected as sound components named "sound1", "sound2" etc.
+
+**available queues** Where each script matches on of the available queue behaviours
+* debeat/queues/random.script
+* debeat/queues/sequence.script
+
+![alt text](https://github.com/adamwestman/debeat/blob/master/queue_setup.png "Queue objects")
+
+## Event
+
+The event system aims to separate audio controll from logic, enabling zero or more event handlers to react on trigger. With this approach teams can litter their code with events and later on add and tweak the audio using scripts alone.
+
+* event.trigger(hash)
+
+**available handlers**
+* play_mixed.script
+* play_queue.script
+* set_group_gain.script
+* set_mixed_gain.script
+* stop_mixed.script
+* stop_queue.script
+
+For all scripts the property queue_name will be compared with triggered events and if a match is found they will be react.
 
 # Examples
 

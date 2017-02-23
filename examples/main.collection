@@ -1,4 +1,4 @@
-name: "default"
+name: "examples"
 instances {
   id: "mixer"
   prototype: "/debeat/go/mixer.go"
@@ -22,6 +22,8 @@ instances {
 scale_along_z: 0
 embedded_instances {
   id: "sounds"
+  children: "attack"
+  children: "block"
   data: "components {\n"
   "  id: \"gui\"\n"
   "  component: \"/examples/main.gui\"\n"
@@ -228,6 +230,405 @@ embedded_instances {
     y: 0.0
     z: 0.0
     w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "events"
+  data: "components {\n"
+  "  id: \"game_start1\"\n"
+  "  component: \"/debeat/event_handlers/play_mixed.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"game_end1\"\n"
+  "  component: \"/debeat/event_handlers/stop_mixed.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"game_end2\"\n"
+  "  component: \"/debeat/event_handlers/play_mixed.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"game_start2\"\n"
+  "  component: \"/debeat/event_handlers/stop_mixed.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"attack\"\n"
+  "  component: \"/debeat/event_handlers/play_queue.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "components {\n"
+  "  id: \"block\"\n"
+  "  component: \"/debeat/event_handlers/play_queue.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  component_properties {
+    id: "game_start1"
+    properties {
+      id: "event_name"
+      value: "game_start"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "sound"
+      value: "/sounds#track1"
+      type: PROPERTY_TYPE_URL
+    }
+  }
+  component_properties {
+    id: "game_end1"
+    properties {
+      id: "event_name"
+      value: "game_end"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "sound"
+      value: "/sounds#track1"
+      type: PROPERTY_TYPE_URL
+    }
+    properties {
+      id: "decay"
+      value: "4.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+  }
+  component_properties {
+    id: "game_end2"
+    properties {
+      id: "event_name"
+      value: "game_end"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "sound"
+      value: "/sounds#track2"
+      type: PROPERTY_TYPE_URL
+    }
+  }
+  component_properties {
+    id: "game_start2"
+    properties {
+      id: "event_name"
+      value: "game_start"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "sound"
+      value: "/sounds#track2"
+      type: PROPERTY_TYPE_URL
+    }
+  }
+  component_properties {
+    id: "attack"
+    properties {
+      id: "event_name"
+      value: "block"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "queue_name"
+      value: "/block"
+      type: PROPERTY_TYPE_HASH
+    }
+  }
+  component_properties {
+    id: "block"
+    properties {
+      id: "event_name"
+      value: "attack"
+      type: PROPERTY_TYPE_HASH
+    }
+    properties {
+      id: "queue_name"
+      value: "/attack"
+      type: PROPERTY_TYPE_HASH
+    }
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "attack"
+  data: "components {\n"
+  "  id: \"script\"\n"
+  "  component: \"/debeat/queues/random.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sound1\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/examples/assets/audio/clap.wav\\\"\\n"
+  "looping: 0\\n"
+  "group: \\\"master\\\"\\n"
+  "gain: 1.0\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sound2\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/examples/assets/audio/metal_tube.ogg\\\"\\n"
+  "looping: 0\\n"
+  "group: \\\"master\\\"\\n"
+  "gain: 1.0\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sound3\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/examples/assets/audio/thud.ogg\\\"\\n"
+  "looping: 0\\n"
+  "group: \\\"master\\\"\\n"
+  "gain: 1.0\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  component_properties {
+    id: "script"
+    properties {
+      id: "sounds"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "block"
+  data: "components {\n"
+  "  id: \"script\"\n"
+  "  component: \"/debeat/queues/sequence.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sound2\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/examples/assets/audio/metal_tube.ogg\\\"\\n"
+  "looping: 0\\n"
+  "group: \\\"master\\\"\\n"
+  "gain: 1.0\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sound1\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/examples/assets/audio/clap.wav\\\"\\n"
+  "looping: 0\\n"
+  "group: \\\"master\\\"\\n"
+  "gain: 1.0\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sound3\"\n"
+  "  type: \"sound\"\n"
+  "  data: \"sound: \\\"/examples/assets/audio/thud.ogg\\\"\\n"
+  "looping: 0\\n"
+  "group: \\\"master\\\"\\n"
+  "gain: 1.0\\n"
+  "\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  component_properties {
+    id: "script"
+    properties {
+      id: "sounds"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
   }
   scale3 {
     x: 1.0

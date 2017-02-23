@@ -1,0 +1,39 @@
+local queue = require("debeat.queue")
+
+--go.property("queue_name", hash(""))
+go.property("sounds", 0)
+
+go.property("gating", 0.1)
+go.property("can_repeat_every", 2)
+
+local HASH_EMPTY = hash("")
+
+function init(self)
+	--if self.queue_name == HASH_EMPTY then
+	--	print("Error", msg.url())
+	--	error("Queue Name not specified")
+	--else
+	if self.sounds < 1 then
+		print("Error", msg.url())
+		error("Sounds need to be more than 0")
+	elseif self.sounds < self.can_repeat_every then
+		print("Error", msg.url())
+		error("Repeat offset can't be larger than sounds.")
+	end
+	
+	local id = go.get_id()
+	self.queue = queue.create(id, {
+		gating = self.gating,
+		behaviour = queue.TYPE_RANDOM,
+		repeat_offset = self.can_repeat_every,
+		global = true,
+	})
+	
+	for i=1,self.sounds do
+		self.queue.add(msg.url("#sound"..i))
+	end
+end
+
+function final(self)
+	queue.destroy(self.queue)
+end

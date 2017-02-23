@@ -1,5 +1,6 @@
 local mixer = require("debeat.mixer")
 local queue = require("debeat.queue")
+local event = require("debeat.event")
 
 local channel = require("examples.templates.channel")
 local track = require("examples.templates.track")
@@ -18,13 +19,13 @@ function init(self)
 	button.set_text("random", "Random")
 	button.set_text("sequence", "Sequence")
 	
-	self.random = queue.create("random", {behaviour = queue.TYPE_RANDOM, min_offset=3})
+	self.random = queue.create(hash("random"), {behaviour = queue.TYPE_RANDOM, min_offset=3})
 	self.random.add(msg.url("#sfx_btn1"))
 	self.random.add(msg.url("#sfx_btn2"))
 	self.random.add(msg.url("#sfx_btn3"))
 	self.random.add(msg.url("#sfx_btn4"))
 	
-	self.sequence = queue.create("sequence", {gating = 0.7})
+	self.sequence = queue.create(hash("sequence"), {gating = 0.7})
 	self.sequence.add(msg.url("#sfx_sequence1"))
 	self.sequence.add(msg.url("#sfx_sequence2"))
 	self.sequence.add(msg.url("#sfx_sequence3"))
@@ -58,6 +59,7 @@ function on_input(self, action_id, action)
 	elseif channel_input("sfx", action_id, action) then
 		return true
 		
+	-- Play queues
 	elseif button.on_input("random", action_id, action) then
 		self.random.play()
 		return true
@@ -78,6 +80,21 @@ function on_input(self, action_id, action)
 		else
 			mixer.stop(msg.url("#track2"))
 		end
+		return true
+		
+		
+	-- Trigger events
+	elseif button.on_input("event_start", action_id, action) then
+		event.trigger(hash("game_start"))
+		return true
+	elseif button.on_input("event_end", action_id, action) then
+		event.trigger(hash("game_end"))
+		return true
+	elseif button.on_input("attack", action_id, action) then
+		event.trigger(hash("attack"))
+		return true
+	elseif button.on_input("block", action_id, action) then
+		event.trigger(hash("block"))
 		return true
 		
 	end

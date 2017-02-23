@@ -1,0 +1,31 @@
+local event = require("debeat.event")
+local queue = require("debeat.queue")
+
+go.property("event_name", hash(""))
+go.property("queue_name", hash(""))
+go.property("delay", 0)
+go.property("gain", 1)
+
+local HASH_EMPTY = hash("")
+
+function init(self)
+	if self.event_name == HASH_EMPTY then
+		print("Error", msg.url())
+		error("Event Name not specified")	
+	elseif self.queue_name == HASH_EMPTY then
+		print("Error", msg.url())
+		error("Queue Name not specified")	
+	end
+	
+	self.handler = function()
+		local instance = queue.get(self.queue_name)
+		if instance then
+			instance.play(self.delay, self.gain)
+		end
+	end
+	event.add_listener(self.event_name, self.handler)
+end
+
+function final(self)
+	event.remove_listener(self.event_name, self.handler)
+end
