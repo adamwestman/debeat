@@ -16,11 +16,11 @@ local HASH_EMPTY = hash("")
 function init(self)
 	if self.event_name == HASH_EMPTY then
 		print("Error", msg.url())
-		error("Event Name not specified")	
+		error("Event Name not specified")
 	end
-	
+
 	self.handler = function()
-		mixer.set_gain((self.sound, self.gain, {
+		mixer.set_gain(self.sound, self.gain, {
 			delay = self.delay,
 			duration = self.duration,
 			easing = easing[self.easing]

@@ -3,6 +3,7 @@ include_dirs = debeat
 
 [project]
 title = Debeat
+version = 2.0.1
 
 [bootstrap]
 main_collection = /examples/main.collectionc
