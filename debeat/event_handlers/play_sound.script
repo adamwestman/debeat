@@ -1,0 +1,37 @@
+local event = require("debeat.event")
+
+go.property("event_name", hash(""))
+
+go.property("sound", msg.url(""))
+go.property("delay", 0)
+go.property("gain", 1)
+go.property("gating", 0.1)
+
+local HASH_EMPTY = hash("")
+local PLAY_SOUND = hash("play_sound")
+
+function init(self)
+	if self.event_name == HASH_EMPTY then
+		print("Error", msg.url())
+		error("Event Name not specified")
+	elseif not (self.gating > 0) then
+		print("Error", msg.url())
+		error("Gating has to be above 0 seconds")
+	end
+
+	local last_play = 0
+	self.handler = function()
+		local current = socket.gettime()
+		if (current - last_play) > self.gating then
+			msg.post(self.sound, PLAY_SOUND, {delay=self.delay, gain=self.gain})
+			last_play = current
+		else
+			print(string.format("Warning event %s called too frequently", tostring(self.event_name)), current - last_play, msg.url() )
+		end
+	end
+	event.add_listener(self.event_name, self.handler)
+end
+
+function final(self)
+	event.remove_listener(self.event_name, self.handler)
+end

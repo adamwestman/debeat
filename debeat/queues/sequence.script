@@ -8,13 +8,12 @@ go.property("gating", 0.1)
 local HASH_EMPTY = hash("")
 
 function init(self)
-	--if self.queue_name == HASH_EMPTY then
-	--	print("Error", msg.url())
-	--	error("Queue Name not specified")
-	--else
 	if self.sounds < 1 then
 		print("Error", msg.url())
 		error("Sounds need to be more than 0")
+	elseif not (self.gating > 0) then
+		print("Error", msg.url())
+		error("Gating has to be above 0 seconds")
 	end
 	
 	local id = go.get_id()

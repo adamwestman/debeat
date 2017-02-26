@@ -87,14 +87,15 @@ The event system aims to separate audio controll from logic, enabling zero or mu
 * event.trigger(hash)
 
 **available handlers**
-* play_mixed.script
-* play_queue.script
-* set_group_gain.script
-* set_mixed_gain.script
-* stop_mixed.script
-* stop_queue.script
+* play_mixed.script *play a sound using the mixer.*
+* play_queue.script *play a sound selected by a specific queue.*
+* play_sound.script *play a sound.*
+* set_group_gain.script *change the gain value of a group.*
+* set_mixed_gain.script *change the gain value of sound currently played by the mixer.*
+* stop_mixed.script *stop a sound currently played by the mixer.*
+* stop_queue.script *stop all sounds played by a specific queue.*
 
-For all scripts the property *Event Name* will be compared with triggered events and if a match is found they will be react.
+For all scripts the property *Event Name* will be compared with triggered events and if a match is found they will react.
 
 ![alt text](https://github.com/adamwestman/debeat/blob/master/queue_event.png "Queue event")
 
