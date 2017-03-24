@@ -28,15 +28,16 @@ local global = {}
 function M.create(id, config)
 	assert(type(id) == "userdata", string.format("Expected id of type hash, received %s", type(id)))
 	config = dtable.merge(config, M.default_config)
-	
+
 	local name = tostring(id)
 	local offset = config.repeat_offset
 	local behaviour = config.behaviour
-	
+
 	assert(offset > 0, string.format("Repeat offset has to be more than 0, received %s", tostring(offset)))
 	assert(behaviour == M.TYPE_SEQUENCE or behaviour == M.TYPE_RANDOM, string.format("Unsuported behaviour type %s requested", tostring(behaviour)))
 
 	local available = {}
+	local default_order = {}
 	local last_play = 0
 	local instance = {}
 
@@ -48,6 +49,7 @@ function M.create(id, config)
 			assert(existing ~= url, "Multiple additions of same sound is not allowed")
 		end
 		table.insert(available, url)
+		table.insert(default_order, url)
 	end
 
 	--- Play the next queued sound, unless blocked by gating.
@@ -85,28 +87,35 @@ function M.create(id, config)
 			msg.post(url, "stop_sound")
 		end
 	end
-	
+
+	--- Reset queue play order.
+	function instance.reset()
+		for i,sound in ipairs(default_order) do
+			available[i] = sound
+		end
+	end
+
 	--- Retrieve the id passed along on create.
-	-- @return id[hash] 
+	-- @return id[hash]
 	function instance.get_id()
-		return id	
+		return id
 	end
-	
+
 	--- Check if this instance is a global queue.
-	-- @return global[boolean] 
+	-- @return global[boolean]
 	function instance.is_global()
-		return config.global	
+		return config.global
 	end
-	
+
 	if config.global then
 		if global[id] then
 			print("Error", msg.url())
-			error("A global queue with the given id already exists")	
+			error("A global queue with the given id already exists")
 		else
 			global[id] = instance
 		end
 	end
-	
+
 	return instance
 end
 
