@@ -1,4 +1,4 @@
-# debeat
+# DeBeat
 Sound Library for the Defold Engine
 
 Try the [HTML5 Demo](https://adamwestman.github.io/Debeat/)
@@ -75,8 +75,8 @@ gain is expected to be a number between 0-1, defaults to 1.
 Queues can also be setup using a specific Game Object and script setup. The queue id will match that of the Game Object and the amount of sounds specified in the coresponding property will be expected as sound components named "sound1", "sound2" etc.
 
 **available queues** Where each script matches on of the available queue behaviours
-* debeat/queues/random.script
-* debeat/queues/sequence.script
+* debeat/queues/random.script *plays sound in shuffled order*
+* debeat/queues/sequence.script *plays sounds in order, then repeats*
 
 ![alt text](https://github.com/adamwestman/debeat/blob/master/queue_setup.png "Queue objects")
 
@@ -84,12 +84,14 @@ Queues can also be setup using a specific Game Object and script setup. The queu
 
 The event system aims to separate audio controll from logic, enabling zero or multiple *event handlers* to react on trigger. With this approach teams can litter their code with events and later on add and tweak the audio using scripts alone.
 
-* event.trigger(hash)
+* event.trigger(hash|string)
+* event(hash|string) *for short*
 
 **available handlers**
 * play_mixed.script *play a sound using the mixer.*
 * play_queue.script *play a sound selected by a specific queue.*
 * play_sound.script *play a sound.*
+* reset_queue.script *reset the play-order for a specific queue.*
 * set_group_gain.script *change the gain value of a group.*
 * set_mixed_gain.script *change the gain value of sound currently played by the mixer.*
 * stop_mixed.script *stop a sound currently played by the mixer.*
@@ -99,18 +101,33 @@ For all scripts the property *Event Name* will be compared with triggered events
 
 ![alt text](https://github.com/adamwestman/debeat/blob/master/queue_event.png "Queue event")
 
+**common params**
+* Event Name			: The event which the listener will be attached to. Should match something triggered by events in the game.
+* Queue Name			: Should match the id of a Queue. For scripts this will be the game-object ID.
+* Sound						: Which sound component to invoke. Should be a url relative or absolute.
+* Gain 						: A value between 0-1 at which the sound will be played.
+* Gain Variation	: A range of extra random variation to the gain. *can be negative*
+* Delay						: Time in seconds to wait after the event has fired, before performing the action.
+* Attack					: Time in seconds to perform fade-in of the sound.
+* Decay						: Time in seconds to perform fade-out of the sound.
+* Easing					: One of the Defold provided Easing values to use when fading. See [debeat.util.easing](debeat/util/easing) for options.
+
 # Examples
+
+**collection setup**
 
 ![alt text](https://github.com/adamwestman/debeat/blob/master/simple_integration.png "Simple Integration")
 
 
+**coded**
+```lua
 	local mixer = require("debeat.mixer")
 	local queue = require("debeat.queue")
 
 	function init(self)
 		msg.post(".", "acquire_input_focus")
 
-		self.sfx_btn = queue.create("btn", {gating=0.3, behaviour=queue.TYPE_RANDOM, min_offset=2})
+		self.sfx_btn = queue.create(hash("btn"), {gating=0.3, behaviour=queue.TYPE_RANDOM, repeat_offset=2})
 		self.sfx_btn.add(msg.url("/sounds#sfx_btn1"))
 		self.sfx_btn.add(msg.url("/sounds#sfx_btn2"))
 		self.sfx_btn.add(msg.url("/sounds#sfx_btn3"))
@@ -134,4 +151,38 @@ For all scripts the property *Event Name* will be compared with triggered events
 
 		end
 	end
+```
 
+**event driven**
+
+```lua
+local event = require("debeat.event")
+
+local button = require("examples.templates.button")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	event.add_listener("block", function()
+		print("Block happened")
+	end)
+end
+
+function on_input(self, action_id, action)
+	-- Trigger events
+	if button.on_input("event_start", action_id, action) then
+		event("game_start")
+		return true
+	elseif button.on_input("event_end", action_id, action) then
+		event("game_end")
+		return true
+	elseif button.on_input("attack", action_id, action) then
+		event("attack")
+		return true
+	elseif button.on_input("block", action_id, action) then
+		event("block")
+		return true
+
+	end
+end
+```

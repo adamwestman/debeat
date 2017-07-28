@@ -1,6 +1,7 @@
+--- A queue which plays sounds in sequence from 1-X and then starts over.
+
 local queue = require("debeat.queue")
 
---go.property("queue_name", hash(""))
 go.property("sounds", 0)
 
 go.property("gating", 0.1)
@@ -15,14 +16,14 @@ function init(self)
 		print("Error", msg.url())
 		error("Gating has to be above 0 seconds")
 	end
-	
+
 	local id = go.get_id()
 	self.queue = queue.create(id, {
 		gating = self.gating,
 		behaviour = queue.TYPE_SEQUENCE,
 		global = true,
 	})
-	
+
 	for i=1,self.sounds do
 		self.queue.add(msg.url("#sound"..i))
 	end
