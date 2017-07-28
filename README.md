@@ -110,7 +110,7 @@ For all scripts the property *Event Name* will be compared with triggered events
 * Delay						: Time in seconds to wait after the event has fired, before performing the action.
 * Attack					: Time in seconds to perform fade-in of the sound.
 * Decay						: Time in seconds to perform fade-out of the sound.
-* Easing					: One of the Defold provided Easing values to use when fading. See [debeat.util.easing](debeat/util/easing) for options.
+* Easing					: One of the Defold provided Easing values to use when fading. See [debeat.util.easing](debeat/util/easing.lua) for options.
 
 # Examples
 
