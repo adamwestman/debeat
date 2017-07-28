@@ -253,6 +253,16 @@ embedded_instances {
   "    z: 0.0\n"
   "    w: 1.0\n"
   "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"game_start\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"sound\"\n"
+  "    value: \"sounds#track1\"\n"
+  "    type: PROPERTY_TYPE_URL\n"
+  "  }\n"
   "}\n"
   "components {\n"
   "  id: \"game_end1\"\n"
@@ -267,6 +277,16 @@ embedded_instances {
   "    y: 0.0\n"
   "    z: 0.0\n"
   "    w: 1.0\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"game_end\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"sound\"\n"
+  "    value: \"sounds#track1\"\n"
+  "    type: PROPERTY_TYPE_URL\n"
   "  }\n"
   "}\n"
   "components {\n"
@@ -283,6 +303,16 @@ embedded_instances {
   "    z: 0.0\n"
   "    w: 1.0\n"
   "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"game_end\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"sound\"\n"
+  "    value: \"sounds#track2\"\n"
+  "    type: PROPERTY_TYPE_URL\n"
+  "  }\n"
   "}\n"
   "components {\n"
   "  id: \"game_start2\"\n"
@@ -297,6 +327,16 @@ embedded_instances {
   "    y: 0.0\n"
   "    z: 0.0\n"
   "    w: 1.0\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"game_start\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"sound\"\n"
+  "    value: \"sounds#track2\"\n"
+  "    type: PROPERTY_TYPE_URL\n"
   "  }\n"
   "}\n"
   "components {\n"
@@ -313,6 +353,16 @@ embedded_instances {
   "    z: 0.0\n"
   "    w: 1.0\n"
   "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"attack\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"queue_name\"\n"
+  "    value: \"/attack\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
   "}\n"
   "components {\n"
   "  id: \"block\"\n"
@@ -327,6 +377,16 @@ embedded_instances {
   "    y: 0.0\n"
   "    z: 0.0\n"
   "    w: 1.0\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"block\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"queue_name\"\n"
+  "    value: \"/block\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
   "  }\n"
   "}\n"
   "components {\n"
@@ -343,6 +403,26 @@ embedded_instances {
   "    z: 0.0\n"
   "    w: 1.0\n"
   "  }\n"
+  "  properties {\n"
+  "    id: \"event_name\"\n"
+  "    value: \"attack\"\n"
+  "    type: PROPERTY_TYPE_HASH\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"sound\"\n"
+  "    value: \"sounds#sfx_btn4\"\n"
+  "    type: PROPERTY_TYPE_URL\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"gain\"\n"
+  "    value: \"0.5\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
+  "  properties {\n"
+  "    id: \"gain_variation\"\n"
+  "    value: \"0.5\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
   "}\n"
   ""
   position {
@@ -355,112 +435,6 @@ embedded_instances {
     y: 0.0
     z: 0.0
     w: 1.0
-  }
-  component_properties {
-    id: "game_start1"
-    properties {
-      id: "event_name"
-      value: "game_start"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "sound"
-      value: "/sounds#track1"
-      type: PROPERTY_TYPE_URL
-    }
-  }
-  component_properties {
-    id: "game_end1"
-    properties {
-      id: "event_name"
-      value: "game_end"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "sound"
-      value: "/sounds#track1"
-      type: PROPERTY_TYPE_URL
-    }
-    properties {
-      id: "decay"
-      value: "4.0"
-      type: PROPERTY_TYPE_NUMBER
-    }
-  }
-  component_properties {
-    id: "game_end2"
-    properties {
-      id: "event_name"
-      value: "game_end"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "sound"
-      value: "/sounds#track2"
-      type: PROPERTY_TYPE_URL
-    }
-  }
-  component_properties {
-    id: "game_start2"
-    properties {
-      id: "event_name"
-      value: "game_start"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "sound"
-      value: "/sounds#track2"
-      type: PROPERTY_TYPE_URL
-    }
-  }
-  component_properties {
-    id: "attack"
-    properties {
-      id: "event_name"
-      value: "attack"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "queue_name"
-      value: "/attack"
-      type: PROPERTY_TYPE_HASH
-    }
-  }
-  component_properties {
-    id: "block"
-    properties {
-      id: "event_name"
-      value: "block"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "queue_name"
-      value: "/block"
-      type: PROPERTY_TYPE_HASH
-    }
-  }
-  component_properties {
-    id: "attack2"
-    properties {
-      id: "event_name"
-      value: "attack"
-      type: PROPERTY_TYPE_HASH
-    }
-    properties {
-      id: "sound"
-      value: "/sounds#sfx_btn4"
-      type: PROPERTY_TYPE_URL
-    }
-    properties {
-      id: "delay"
-      value: "0.6"
-      type: PROPERTY_TYPE_NUMBER
-    }
-    properties {
-      id: "gating"
-      value: "0.5"
-      type: PROPERTY_TYPE_NUMBER
-    }
   }
   scale3 {
     x: 1.0
@@ -484,6 +458,11 @@ embedded_instances {
   "    z: 0.0\n"
   "    w: 1.0\n"
   "  }\n"
+  "  properties {\n"
+  "    id: \"sounds\"\n"
+  "    value: \"3.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
   "}\n"
   "embedded_components {\n"
   "  id: \"sound1\"\n"
@@ -556,14 +535,6 @@ embedded_instances {
     y: 0.0
     z: 0.0
     w: 1.0
-  }
-  component_properties {
-    id: "script"
-    properties {
-      id: "sounds"
-      value: "3.0"
-      type: PROPERTY_TYPE_NUMBER
-    }
   }
   scale3 {
     x: 1.0
@@ -587,6 +558,11 @@ embedded_instances {
   "    z: 0.0\n"
   "    w: 1.0\n"
   "  }\n"
+  "  properties {\n"
+  "    id: \"sounds\"\n"
+  "    value: \"3.0\"\n"
+  "    type: PROPERTY_TYPE_NUMBER\n"
+  "  }\n"
   "}\n"
   "embedded_components {\n"
   "  id: \"sound2\"\n"
@@ -659,14 +635,6 @@ embedded_instances {
     y: 0.0
     z: 0.0
     w: 1.0
-  }
-  component_properties {
-    id: "script"
-    properties {
-      id: "sounds"
-      value: "3.0"
-      type: PROPERTY_TYPE_NUMBER
-    }
   }
   scale3 {
     x: 1.0

@@ -8,23 +8,23 @@ local button = require("examples.templates.button")
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	
+
 	channel.set_name("master", "Master")
 	channel.set_name("music", "Music")
 	channel.set_name("sfx", "Sfx")
-	
+
 	track.set_name("track1", "Drums")
 	track.set_name("track2", "Guitar")
-	
+
 	button.set_text("random", "Random")
 	button.set_text("sequence", "Sequence")
-	
+
 	self.random = queue.create(hash("random"), {behaviour = queue.TYPE_RANDOM, min_offset=3})
 	self.random.add(msg.url("#sfx_btn1"))
 	self.random.add(msg.url("#sfx_btn2"))
 	self.random.add(msg.url("#sfx_btn3"))
 	self.random.add(msg.url("#sfx_btn4"))
-	
+
 	self.sequence = queue.create(hash("sequence"), {gating = 0.7})
 	self.sequence.add(msg.url("#sfx_sequence1"))
 	self.sequence.add(msg.url("#sfx_sequence2"))
@@ -41,7 +41,7 @@ local function channel_input(id, action_id, action)
 	local was_muted = channel.is_muted(id)
 	if channel.on_input(id, action_id, action) then
 		local gain = channel.get_gain(id, 0, 1)
-		
+
 		if was_muted == channel.is_muted(id) then
 			mixer.set_group_gain(hash(id), gain)
 		else
@@ -58,7 +58,7 @@ function on_input(self, action_id, action)
 		return true
 	elseif channel_input("sfx", action_id, action) then
 		return true
-		
+
 	-- Play queues
 	elseif button.on_input("random", action_id, action) then
 		self.random.play()
@@ -66,7 +66,7 @@ function on_input(self, action_id, action)
 	elseif button.on_input("sequence", action_id, action) then
 		self.sequence.play()
 		return true
-		
+
 	elseif track.on_input("track1", action_id, action) then
 		if track.is_playing("track1") then
 			mixer.play(msg.url("#track1"))
@@ -81,21 +81,21 @@ function on_input(self, action_id, action)
 			mixer.stop(msg.url("#track2"))
 		end
 		return true
-		
-		
+
+
 	-- Trigger events
 	elseif button.on_input("event_start", action_id, action) then
-		event.trigger(hash("game_start"))
+		event("game_start")
 		return true
 	elseif button.on_input("event_end", action_id, action) then
-		event.trigger(hash("game_end"))
+		event("game_end")
 		return true
 	elseif button.on_input("attack", action_id, action) then
-		event.trigger(hash("attack"))
+		event("attack")
 		return true
 	elseif button.on_input("block", action_id, action) then
-		event.trigger(hash("block"))
+		event("block")
 		return true
-		
+
 	end
 end
