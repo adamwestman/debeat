@@ -5,22 +5,26 @@ go.property("event_name", hash(""))
 go.property("queue_name", hash(""))
 go.property("delay", 0)
 go.property("gain", 1)
+go.property("gain_variation", 0)
 
 local HASH_EMPTY = hash("")
 
 function init(self)
 	if self.event_name == HASH_EMPTY then
 		print("Error", msg.url())
-		error("Event Name not specified")	
+		error("Event Name not specified")
 	elseif self.queue_name == HASH_EMPTY then
 		print("Error", msg.url())
-		error("Queue Name not specified")	
+		error("Queue Name not specified")
+	elseif self.gain + self.gain_variation > 1 then
+		print("Error", msg.url())
+		error("Gain + Gain Variation exceed 1 in total")
 	end
-	
+
 	self.handler = function()
 		local instance = queue.get(self.queue_name)
 		if instance then
-			instance.play(self.delay, self.gain)
+			instance.play(self.delay, self.gain + math.random() * self.gain_variation)
 		end
 	end
 	event.add_listener(self.event_name, self.handler)

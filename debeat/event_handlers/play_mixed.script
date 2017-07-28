@@ -7,6 +7,7 @@ go.property("event_name", hash(""))
 
 go.property("sound", msg.url(""))
 go.property("gain", 1)
+go.property("gain_variation", 0)
 go.property("delay", 0)
 go.property("attack", 0.1)
 go.property("easing", hash("LINEAR"))
@@ -16,12 +17,15 @@ local HASH_EMPTY = hash("")
 function init(self)
 	if self.event_name == HASH_EMPTY then
 		print("Error", msg.url())
-		error("Event Name not specified")	
+		error("Event Name not specified")
+	elseif self.gain + self.gain_variation > 1 then
+		print("Error", msg.url())
+		error("Gain + Gain Variation exceed 1 in total")
 	end
-	
+
 	self.handler = function()
 		mixer.play(self.sound, {
-			gain = self.gain,
+			gain = self.gain + math.random() * self.gain_variation,
 			delay = self.delay,
 			attack = self.attack,
 			easing = easing[self.easing]

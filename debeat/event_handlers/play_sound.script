@@ -5,6 +5,7 @@ go.property("event_name", hash(""))
 go.property("sound", msg.url(""))
 go.property("delay", 0)
 go.property("gain", 1)
+go.property("gain_variation", 0)
 go.property("gating", 0.1)
 
 local HASH_EMPTY = hash("")
@@ -17,13 +18,19 @@ function init(self)
 	elseif not (self.gating > 0) then
 		print("Error", msg.url())
 		error("Gating has to be above 0 seconds")
+	elseif self.gain + self.gain_variation > 1 then
+		print("Error", msg.url())
+		error("Gain + Gain Variation exceed 1 in total")
 	end
 
 	local last_play = 0
 	self.handler = function()
 		local current = socket.gettime()
 		if (current - last_play) > self.gating then
-			msg.post(self.sound, PLAY_SOUND, {delay=self.delay, gain=self.gain})
+			msg.post(self.sound, PLAY_SOUND, {
+				delay = self.delay,
+				gain = self.gain + math.random() * self.gain_variation
+			})
 			last_play = current
 		else
 			print(string.format("Warning event %s called too frequently", tostring(self.event_name)), current - last_play, msg.url() )
